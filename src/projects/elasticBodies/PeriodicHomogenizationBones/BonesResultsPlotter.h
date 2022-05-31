@@ -280,58 +280,58 @@ public :
             //! plot von mises stresses on interface
             //! ========================================================================================
             if( plotVonMises ){
-            aol::consoleOutput( "plot von mises stresses on interface" );
-            _parser.createSubDirectory("StressOnInterface");
-            
-            MatOptConfigurator matOpConf ( _parser, conf );
-            const int numLoads = _parser.template get<int> ( "AffineDisp.numLoads" );
-            
-            // for bone
-            for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
+                // aol::consoleOutput( "plot von mises stresses on interface" );
+                // _parser.createSubDirectory("StressOnInterface");
                 
-                BonesInterface<MatOptConfigurator,BONE> interface ( matOpConf );
+                // MatOptConfigurator matOpConf ( _parser, conf );
+                // const int numLoads = _parser.template get<int> ( "AffineDisp.numLoads" );
                 
-                VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
-                aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBonePeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
-                
-                VectorType displacementAffine ( conf.numAffineSymGradDofs );
-                aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBoneAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                
-                std::vector<RealType> stressVec, stressVecBlock;
-                interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_InterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec, false  );
-                interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock, true  );
-                
-                interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_InterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_InterfaceBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVec );
-                interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_BlockInterfaceBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVecBlock );
-            }
-            // for polymer
-            for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
-                
-                BonesInterface<MatOptConfigurator,POLYMER> interface ( matOpConf );
-                
-                VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
-                aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerPeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
-                
-                VectorType displacementAffine ( conf.numAffineSymGradDofs );
-                aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                
-                std::vector<RealType> stressVec, stressVecBlock;
-                interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_InterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec, false  );
-                interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock, true  );
-                
-                interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_InterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_InterfacePolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVec );
-                interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_BlockInterfacePolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVecBlock );
-            }
+                // // for bone
+                // for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
+                    
+                //     BonesInterface<MatOptConfigurator,BONE> interface ( matOpConf );
+                    
+                //     VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
+                //     aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBonePeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+                //     quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
+                    
+                //     VectorType displacementAffine ( ConfiguratorType::numAffineSymGradDofs );
+                //     aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBoneAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+                    
+                //     std::vector<RealType> stressVec, stressVecBlock;
+                //     interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_InterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec, false  );
+                //     interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock, true  );
+                    
+                //     interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_InterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), 
+                //                         aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_InterfaceBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+                //                         "VonMisesStresses", stressVec );
+                //     interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfaceBone.vtk", _saveDirectory.c_str() ).c_str(), 
+                //                         aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_BlockInterfaceBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+                //                         "VonMisesStresses", stressVecBlock );
+                // }
+                // // for polymer
+                // for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
+                    
+                //     BonesInterface<MatOptConfigurator,POLYMER> interface ( matOpConf );
+                    
+                //     VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
+                //     aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerPeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+                //     quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
+                    
+                //     VectorType displacementAffine ( conf.numAffineSymGradDofs );
+                //     aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+                    
+                //     std::vector<RealType> stressVec, stressVecBlock;
+                //     interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_InterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec, false  );
+                //     interface.evaluateStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock, true  );
+                    
+                //     interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_InterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), 
+                //                         aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_InterfacePolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+                //                         "VonMisesStresses", stressVec );
+                //     interface.plotStress( aol::strprintf( "%s/Interface/SolMaterial_BlockInterfacePolymer.vtk", _saveDirectory.c_str() ).c_str(), 
+                //                         aol::strprintf( "%s/StressOnInterface/SolMaterial_VonMises_BlockInterfacePolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+                //                         "VonMisesStresses", stressVecBlock );
+                // }
             }
             
         }
@@ -341,65 +341,65 @@ public :
         //=====================================================================================================================
         
         void plotVonMisesStresses( ) const{
-            aol::consoleOutput( "plot von mises stresses" );
-            _parser.createSubDirectory("Stress");
+            // aol::consoleOutput( "plot von mises stresses" );
+            // _parser.createSubDirectory("Stress");
             
-            MeshType mesh ( _numDofVec, _lengthVec );
-            ConfiguratorType conf ( mesh );
-            QuocHandler<ConfiguratorType> quocHandler( _parser, conf );
+            // MeshType mesh ( _numDofVec, _lengthVec );
+            // ConfiguratorType conf ( mesh );
+            // QuocHandler<ConfiguratorType> quocHandler( _parser, conf );
             
-            VectorType material ( mesh.getNumVertices() );
-            aol::loadVectorFromFile<VectorType>( material, aol::strprintf ( "%s/SolMaterial.txt", _saveDirectory.c_str()  ) ); 
-            quocHandler.extendVectorPeriodically( material );
-            QuocDiscreteFunctionDefault<ConfiguratorType> discreteFctSingleCell ( conf, material ); //note: here solMaterialBlock is actually OldLevel
-            MatOptConfigurator matOpConf ( _parser, conf );
-            const int numLoads = _parser.template get<int> ( "AffineDisp.numLoads" );
+            // VectorType material ( mesh.getNumVertices() );
+            // aol::loadVectorFromFile<VectorType>( material, aol::strprintf ( "%s/SolMaterial.txt", _saveDirectory.c_str()  ) ); 
+            // quocHandler.extendVectorPeriodically( material );
+            // QuocDiscreteFunctionDefault<ConfiguratorType> discreteFctSingleCell ( conf, material ); //note: here solMaterialBlock is actually OldLevel
+            // MatOptConfigurator matOpConf ( _parser, conf );
+            // const int numLoads = _parser.template get<int> ( "AffineDisp.numLoads" );
             
-            //for bone
-            for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
+            // //for bone
+            // for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
                 
-                BonesInterface<MatOptConfigurator,BONE> interface ( matOpConf );
+            //     BonesInterface<MatOptConfigurator,BONE> interface ( matOpConf );
                 
-                VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
-                aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBonePeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
+            //     VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ), displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() );
+            //     aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBonePeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+            //     quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
                 
-                VectorType displacementAffine ( conf.numAffineSymGradDofs );
-                aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBoneAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+            //     VectorType displacementAffine ( conf.numAffineSymGradDofs );
+            //     aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementBoneAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
                 
-                std::vector<RealType> stressVec3d, stressVecBlock3d;
-                interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec3d, false  );
-                interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock3d, true );
-                interface.plotStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/Stress/SolMaterial_VonMises_Bone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVec3d );
-                interface.plotStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/Stress/SolMaterial_VonMises_BlockBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVecBlock3d );
-            }
+            //     std::vector<RealType> stressVec3d, stressVecBlock3d;
+            //     interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec3d, false  );
+            //     interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock3d, true );
+            //     interface.plotStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), 
+            //                           aol::strprintf( "%s/Stress/SolMaterial_VonMises_Bone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+            //                           "VonMisesStresses", stressVec3d );
+            //     interface.plotStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), 
+            //                           aol::strprintf( "%s/Stress/SolMaterial_VonMises_BlockBone_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+            //                           "VonMisesStresses", stressVecBlock3d );
+            // }
             
-            //for polymer
-            for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
+            // //for polymer
+            // for( int loadIdx=0; loadIdx<numLoads; ++loadIdx ){
                 
-                BonesInterface<MatOptConfigurator,POLYMER> interface ( matOpConf );
+            //     BonesInterface<MatOptConfigurator,POLYMER> interface ( matOpConf );
                 
-                VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ),displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() ) ;
-                aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerPeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
-                quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
+            //     VectorType displacementPeriodic ( conf.dimDomain * conf.getNumGlobalDofs() ),displacementPeriodicExtended ( conf.dimDomain * conf.getNumGlobalDofs() ) ;
+            //     aol::loadVectorFromFile<VectorType>( displacementPeriodic, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerPeriodic_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+            //     quocHandler.extendMultiVectorPeriodically( displacementPeriodic, displacementPeriodicExtended );
                 
-                VectorType displacementAffine ( conf.numAffineSymGradDofs );
-                aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
+            //     VectorType displacementAffine ( conf.numAffineSymGradDofs );
+            //     aol::loadVectorFromFile<VectorType>( displacementAffine, aol::strprintf( "%s/Deformation/SolMaterial_DisplacementPolymerAffine_Dir%d.txt", _saveDirectory.c_str(),  loadIdx ) ); 
                 
-                std::vector<RealType> stressVec3d, stressVecBlock3d;
-                interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec3d, false  );
-                interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock3d, true );
-                interface.plotStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/Stress/SolMaterial_VonMises_Polymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVec3d );
-                interface.plotStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), 
-                                      aol::strprintf( "%s/Stress/SolMaterial_VonMises_BlockPolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
-                                      "VonMisesStresses", stressVecBlock3d );
-            }
+            //     std::vector<RealType> stressVec3d, stressVecBlock3d;
+            //     interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVec3d, false  );
+            //     interface.evaluateStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), material, displacementPeriodicExtended, displacementAffine, stressVecBlock3d, true );
+            //     interface.plotStress( aol::strprintf( "%s/SolMaterial_Undeformed.vtk", _saveDirectory.c_str() ).c_str(), 
+            //                           aol::strprintf( "%s/Stress/SolMaterial_VonMises_Polymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+            //                           "VonMisesStresses", stressVec3d );
+            //     interface.plotStress( aol::strprintf( "%s/SolMaterial_Block.vtk", _saveDirectory.c_str() ).c_str(), 
+            //                           aol::strprintf( "%s/Stress/SolMaterial_VonMises_BlockPolymer_Direction%d.vtk", _saveDirectory.c_str(), loadIdx ).c_str(),
+            //                           "VonMisesStresses", stressVecBlock3d );
+            // }
             
         }
         

@@ -31,6 +31,7 @@ bool runPdflatexWithBashFile ( const string& CommandFileName, const string& Save
   cout << "systemCommandPDF = " << systemCommandPDF << endl;
   bool failedPDF; failedPDF = ( system ( systemCommandPDF.c_str() ) != EXIT_SUCCESS );
   if ( failedPDF ) cerr << "pdflatex returned an error." << endl;
+  return !failedPDF;
 }
 
 

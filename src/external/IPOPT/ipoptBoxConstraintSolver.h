@@ -195,7 +195,6 @@ public:
     //Derivative Test
 #ifdef IPOPTDERIVATIVETEST
     ipoptApp->Options ()->SetStringValue  ( "derivative_test", "first-order" );
-//     ipoptApp->Options ()->SetStringValue  ( "derivative_test_print_all", "yes" );
     ipoptApp->Options ()->SetStringValue  ( "derivative_test_print_all", "no" );
     ipoptApp->Options ()->SetNumericValue ( "derivative_test_tol", 1.e-4 );
     ipoptApp->Options ()->SetNumericValue ( "derivative_test_perturbation", 1.e-6 );
@@ -210,7 +209,7 @@ public:
     // Enable quasi-Newton hessian approximation
     ipoptApp->Options ()->SetStringValue ( "hessian_approximation", "limited-memory" );
     ipoptApp->Options ()->SetIntegerValue ( "max_iter", _MaxIterations );
-    ipoptApp->Options ()->SetStringValue ( "linear_solver", "MUMPS" );
+    ipoptApp->Options ()->SetStringValue ( "linear_solver", "ma27" );
 
     ipoptApp->Options()->SetIntegerValue( "print_level", _ipoptPrintLevel );
     
@@ -225,8 +224,6 @@ public:
     
     outputIpoptStatus ( ipoptStatus, true );
     
-//     Ipopt::SmartPtr< Ipopt::IpoptCalculatedQuantities >  ipCQ ( nlp, const Ipopt::SmartPtr< IpoptData > &ip_data)
-//     double error = ipCQ->curr_nlp_error();
     solverInfo.setSolverStatus( getIpoptStatus( ipoptStatus ).c_str() );
     solverInfo.setError( tsOpt->getNLPError() );
     solverInfo.setNumIterations( tsOpt->getNumIterations() );
@@ -476,7 +473,7 @@ public:
     ipoptApp->Options()->SetStringValue ( "hessian_approximation", "exact" );
     
     ipoptApp->Options()->SetIntegerValue ( "max_iter", _MaxIterations );
-    ipoptApp->Options()->SetStringValue ( "linear_solver", "MUMPS" );
+    ipoptApp->Options()->SetStringValue ( "linear_solver", "ma27" );
 
     //set print_level (from 0 - 12 )
     ipoptApp->Options()->SetIntegerValue( "print_level", _ipoptPrintLevel );

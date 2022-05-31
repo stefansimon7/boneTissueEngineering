@@ -30,9 +30,9 @@ int main(int argc, char ** argv) {
     
     aol::BoostParser parser;
     if( dimension == 2 )
-        parser = aol::BoostParser ( "../../../../ParameterParser/shapeDesignBones/BonesAffinePeriodic2D.ini", "../../../../ParameterParser/counter.txt", "/MaterialOptBones2D" );
+        parser = aol::BoostParser ( "../../../../parser/shapeDesignBones/BonesAffinePeriodic2D.ini", "../../../../parser/counter.txt", "/MaterialOptBones2D" );
     if( dimension == 3 )
-        parser = aol::BoostParser ( "../../../../ParameterParser/shapeDesignBones/BonesAffinePeriodic3D.ini", "../../../../ParameterParser/counter.txt", "/MaterialOptBones3D" );
+        parser = aol::BoostParser ( "../../../../parser/shapeDesignBones/BonesAffinePeriodic3D.ini", "../../../../parser/counter.txt", "/MaterialOptBones3D" );
     const string saveDirectory = parser.template get<string> ("saving.saveDirectory" );
     cout << "saveDirectory is " << saveDirectory.c_str() << endl;    
     

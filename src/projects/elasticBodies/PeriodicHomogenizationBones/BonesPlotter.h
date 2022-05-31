@@ -39,7 +39,7 @@ public :
 
         vtkPlotter plotter( _saveDirectory );
         
-        ParameterParserType parserVTK( "../../../../ParameterParser/shapeDesignBones/vtkPlotInterfaceCell.ini" );
+        ParameterParserType parserVTK( "../../../../parser/shapeDesignBones/vtkPlotInterfaceCell.ini" );
         
         for( int loadIdx=0; loadIdx< _numLoads; ++loadIdx ){
             plotter.template plotToPngWithParserInfo<ParameterParserType>( 

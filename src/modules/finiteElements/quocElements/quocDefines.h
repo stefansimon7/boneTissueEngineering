@@ -4,11 +4,6 @@
 #include <general.h>
 #include <loadAndSave.h>
 
-#include <EigenBiCGSTAB_New.h>
-#include <EigenGMRES_New.h>
-#include <EigenUmfPackSupport_New.h>
-#include <EigenProjectedPCG_New.h>
-
 
 namespace quocFE {
 
@@ -29,8 +24,8 @@ public :
   typedef Eigen::Triplet<RealType> TripletType;
   typedef aol::BoostParser ParameterParserType;
   
-  typedef Eigen::ConjugateGradient_NEW<SparseMatrixType, Eigen::Lower|Eigen::Upper> IterativeLinearSolverType;
-  typedef Eigen::UmfPackLU_NEW<SparseMatrixType> DirectLinearSolverType; //for long int
+  typedef Eigen::ConjugateGradient<SparseMatrixType, Eigen::Lower|Eigen::Upper> IterativeLinearSolverType;
+  typedef Eigen::UmfPackLU<SparseMatrixType> DirectLinearSolverType; //for long int
 };
   
 

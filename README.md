@@ -6,7 +6,7 @@
 Simultaneous elastic shape optimization for a domain splitting in bone tissue engineering.
 P. Dondl, P. S. P. Poh, M. Rumpf, and S. Simon. 
 Proceedings of the Royal Society A: Mathematical, Physical and Engineering Sciences, 475(2227):20180718, jul 2019.
-(Young et al., [2018](10.1098/rspa.2018.0718)).
+([DOI](https://royalsocietypublishing.org/doi/10.1098/rspa.2018.0718).
 
 ## Installation
 The following external libraries are required:

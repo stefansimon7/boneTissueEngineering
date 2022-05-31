@@ -4,8 +4,6 @@
 #include <general.h>
 #include <loadAndSave.h>
 #include <unsupported/Eigen/IterativeSolvers>
-#include <EigenBiCGSTAB_New.h>
-#include <EigenGMRES_New.h>
 
 
 

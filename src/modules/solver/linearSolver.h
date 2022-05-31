@@ -4,8 +4,6 @@
 #include <general.h>
 #include <loadAndSave.h>
 #include <unsupported/Eigen/IterativeSolvers>
-#include <EigenBiCGSTAB_New.h>
-#include <EigenGMRES_New.h>
 
 
 enum LinearSolverMethod {
@@ -17,11 +15,9 @@ enum LinearSolverMethod {
     BiCGSTAB = 21,
     BiCGSTAB_WithGuess = 22,
     BiCGSTAB_ILU = 23,
-    BiCGSTAB_NEW = 24,
     EigenGMRES = 31,
     EigenGMRES_WithGuess = 32,
     EigenGMRES_ILU = 33,
-    EigenGMRES_NEW = 34
 };
 
 
@@ -42,12 +38,9 @@ protected:
     Eigen::CholmodDecomposition<MatrixType> _CholmodSolver;
     Eigen::ConjugateGradient<MatrixType, Eigen::Lower|Eigen::Upper> _CGSolver;
     Eigen::BiCGSTAB<MatrixType> _BiCGSolver;
-    Eigen::BiCGSTAB_NEW<MatrixType> _BiCGSolverNew;
+    Eigen::BiCGSTAB<MatrixType> _BiCGSolverNew;
     Eigen::GMRES<MatrixType> _GMRESSolver;
-    Eigen::GMRES_NEW<MatrixType> _GMRESSolverNew;
-    
-//     const RealType _tolerance;
-//     const Eigen::Index _maxIterations;
+    Eigen::GMRES<MatrixType> _GMRESSolverNew;
     
     const string _errorMessage;
     const string _saveDirectory;
@@ -58,16 +51,11 @@ public:
   LinearSystemSolver( LinearSolverMethod linearSolver, const string &errorMessage, const string &saveDirectory  ) : 
   _solverType(linearSolver), _errorMessage( errorMessage ), _saveDirectory ( saveDirectory ) {}   
   
-//   LinearSystemSolver( LinearSolverMethod linearSolver, const RealType tolerance, const Eigen::Index maxIterations, const Eigen::Index maxIterations, const string &errorMessage, const string &saveDirectory  ) : 
-//   _solverType(linearSolver), _tolerance(tolerance), _maxIterations(maxIterations),_errorMessage( errorMessage ), _saveDirectory ( saveDirectory ) {}   
-  
-  //
   void prepareSolver( const MatrixType& systemMatrix ) {
     switch( _solverType ){
        case UmfPackLU:{
            _LUSolver.compute(systemMatrix);
            if( _LUSolver.info()!=Eigen::Success ){
-//             _LUSolver.umfpackReportInfo();
                throw std::invalid_argument ( aol::strprintf ( "prepare UmfPackLU solver failed in File %s at line %d.", __FILE__, __LINE__ ).c_str() );
                return;
            }
@@ -102,28 +90,9 @@ public:
             break;
       }
       
-     case BiCGSTAB_NEW : {
-            _BiCGSolverNew.compute(systemMatrix);
-            if(_BiCGSolverNew.info()!=Eigen::Success) {
-              cout << "error comes from prepare matrix in " << _errorMessage << endl;
-              throw std::invalid_argument ( aol::strprintf ( "prepare BICGSTAB solver failed in File %s at line %d.", __FILE__, __LINE__ ).c_str() );
-              return;
-            }
-            break;
-      }
-      
       case EigenGMRES : {
           _GMRESSolver.compute( systemMatrix );
           if(_GMRESSolver.info()!=Eigen::Success) {
-              throw std::invalid_argument ( aol::strprintf ( "prepare GMRES solver failed in File %s at line %d.", __FILE__, __LINE__ ).c_str() );
-              return;
-            }
-          break;
-      }
-      
-      case EigenGMRES_NEW : {
-          _GMRESSolverNew.compute( systemMatrix );
-          if(_GMRESSolverNew.info()!=Eigen::Success) {
               throw std::invalid_argument ( aol::strprintf ( "prepare GMRES solver failed in File %s at line %d.", __FILE__, __LINE__ ).c_str() );
               return;
             }
@@ -166,37 +135,13 @@ public:
             }
             break;
       }
-      
-     case BiCGSTAB_NEW : {
-         _BiCGSolverNew.setTolerance( tolerance );
-         solution = _BiCGSolverNew.solve( rhs );
-            if(_BiCGSolverNew.info()!=Eigen::Success ) {
-                cout << "error comes from solve in " << _errorMessage << endl;
-                std::cout << "#iterations:     " << _BiCGSolverNew.iterations() << std::endl;
-                std::cout << "estimated error: " << _BiCGSolverNew.error()      << std::endl;
-                return false;  
-            }
-            break;
-      }
-      
+
       case EigenGMRES : {
             solution = _GMRESSolver.solve( rhs );
             if(_GMRESSolver.info()!=Eigen::Success) {
                  cout << "error comes from " << _errorMessage << endl;
                  std::cout << "#iterations:     " << _GMRESSolver.iterations() << std::endl;
                  std::cout << "estimated error: " << _GMRESSolver.error()      << std::endl;
-                return false;
-            } 
-            break;
-      }
-      
-      case EigenGMRES_NEW : {
-            _GMRESSolverNew.setTolerance( tolerance );
-            solution = _GMRESSolverNew.solve( rhs );
-            if( (_GMRESSolverNew.info()!=Eigen::Success) && (_GMRESSolverNew.error() > 1.e+3 * _GMRESSolverNew.tolerance() ) ) {
-                 cout << "error comes from " << _errorMessage << endl;
-                 std::cout << "#iterations:     " << _GMRESSolverNew.iterations() << std::endl;
-                 std::cout << "estimated error: "  << std::setprecision(25) << _GMRESSolverNew.error()      << std::endl;
                 return false;
             } 
             break;
@@ -316,28 +261,6 @@ void solveLinearSystem ( const typename DataTypeContainer::SparseMatrixType & sy
             solution = solver.solve( rhs );
             break;
       }
-      
-      
-    case BiCGSTAB_NEW : {
-        Eigen::BiCGSTAB_NEW<SparseMatrixType> solver;
-        const RealType tolerance = 3.e-16;
-        const RealType newTolerance = sqrt( tolerance * tolerance * systemMatrix.cols() );
-        solver.setTolerance( newTolerance );
-        const RealType maxItersFac = 0.25;
-        const int maxIters = static_cast<int> ( maxItersFac * static_cast<RealType> ( systemMatrix.cols() ) );
-        solver.setMaxIterations(maxIters);
-        
-        solver.compute(systemMatrix);
-        if(solver.info()!=Eigen::Success) {
-            throw std::invalid_argument ( aol::strprintf ( "BiCGStab solver failed in File %s at line %d.", __FILE__, __LINE__ ).c_str() );
-            return;
-        }
-        solution = solver.solve( rhs );
-        VectorType residual = systemMatrix * solution;
-        residual -= rhs;
-        cout << "error = " << residual.norm() << endl;
-        break;
-    }
       
       case EigenGMRES : {
           Eigen::GMRES<SparseMatrixType > solver(systemMatrix);

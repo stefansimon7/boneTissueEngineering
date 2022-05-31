@@ -97,12 +97,6 @@ public:
         out << ( i == 0 ? "" : " " ) << _mesh.getElementNodeIdx( elementIter, i );
       out << endl;
     }
-    
-//     out << "CELL_TYPES " << _mesh.getNumElements() << endl;
-//     // VTK CELL TYPES
-//     for ( int elementIter = 0; elementIter < _mesh.getNumElements(); ++elementIter ) {
-//       out << _mesh._VTKCELLTYPE << endl;
-//     }
 
     this->writePointData( out );
     this->writeCellData( out, polydata );
@@ -138,7 +132,6 @@ public:
     }
 
     IndicesOfElementType tmpElementIndices; const int dimPolygon = tmpElementIndices.size();
-//     out << "POLYGONS " << _mesh.getNumElements() << " " << (1 + dimPolygon ) * _mesh.getNumElements() << endl;
     out << "CELLS " << _mesh.getNumElements() << " " << (1 + dimPolygon ) * _mesh.getNumElements() << endl;
     // vertex indices of element
     for ( int elementIter = 0; elementIter < _mesh.getNumElements(); ++elementIter ) {

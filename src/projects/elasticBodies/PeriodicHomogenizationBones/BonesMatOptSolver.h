@@ -272,6 +272,8 @@ private :
     }
     OptDeformFinder.getQuocHandler().plotUndeformedWithMaterial ( materialScaledTo01, aol::strprintf( "%s_Undeformed", name.c_str() ).c_str() );
   
+  }
+
   void plotResults( ParameterParserType &parserRefinementStep ) const{
     
     BonesResultsPlotter<MatOptConfigurator> plotter( parserRefinementStep );

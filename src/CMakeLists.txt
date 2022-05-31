@@ -24,13 +24,28 @@ endif()
 ############################################ 
 option( USE_BOOST "Boost" ON )
 if ( USE_BOOST )
+    set(Boost_NO_BOOST_CMAKE ON )
+    set(Boost_NO_SYSTEM_PATHS ON )
+
+    set(PESOPT_BOOST_DIR "" CACHE PATH "The directory where BOOST library is installed")
+    if(PESOPT_BOOST_DIR)
+        message( "set boost_Root to" ${PESOPT_BOOST_DIR} )
+        set(BOOST_ROOT ${PESOPT_BOOST_DIR})
+        set(BOOST_INCLUDEDIR ${PESOPT_BOOST_DIR}/include)
+        set(BOOST_LIBRARYDIR ${PESOPT_BOOST_DIR}/lib)
+    endif(PESOPT_BOOST_DIR)
+
     set (Boost_USE_STATIC_LIBS OFF) #must be OFF if one wants to build shared libraries
-    set (Boost_USE_MULTITHREADED ON)  
-    set (Boost_USE_STATIC_RUNTIME OFF) 
-    find_package (Boost COMPONENTS system filesystem program_options log log_setup ) 
-    include_directories (${Boost_INCLUDE_DIRS}) 
-#     set_property(TARGET ${Boost_INCLUDE_DIRS} PROPERTY POSITION_INDEPENDENT_CODE ON)
+    set (Boost_USE_MULTITHREADED ON)
+    set (Boost_USE_STATIC_RUNTIME OFF)
+
+    find_package (Boost COMPONENTS system filesystem program_options log log_setup )
+    include_directories(${Boost_INCLUDE_DIRS})
+    link_directories(${Boost_LIBRARY_DIRS})
+    
+    add_definitions(-DUSE_BOOST)
 endif ( USE_BOOST )
+
 
 
 ###########################################
@@ -97,32 +112,31 @@ link_directories(${SUITESPARSE_LIBRARY_DIR})
 ###########################################
 #Eigen
 ############################################ 
-include_directories ("${PROJECT_SOURCE_DIR}/externalLibs/eigen")
-                
- 
+find_path(EIGEN_INCLUDE_DIR Eigen/Core PATHS "${PROJECT_SOURCE_DIR}/externalLibs/eigen" NO_DEFAULT_PATH)
+include_directories(${EIGEN_INCLUDE_DIR})
+add_definitions(-DUSE_EIGEN)
+
 ###########################################
 #IPOPT
 ###########################################
 option( USE_IPOPT "Interior Point Solver" ON )
 if( USE_IPOPT )
 
- find_path(IPOPT_INCLUDE_DIR IpTNLP.hpp PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt/build/include/coin" NO_DEFAULT_PATH )  
- find_library(IPOPT_LIBRARY ipopt PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt/build/lib" NO_DEFAULT_PATH ) 
-#  find_path(IPOPT_INCLUDE_DIR IpTNLP.hpp PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt_WithHSL/build/include/coin" NO_DEFAULT_PATH )  
-#  find_library(IPOPT_LIBRARY ipopt PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt_WithHSL/build/lib" NO_DEFAULT_PATH ) 
- 
- set(IPOPT_INCLUDE_DIRS "${IPOPT_INCLUDE_DIR}" )
- set(IPOPT_LIBRARIES "${IPOPT_LIBRARY}")    
- add_definitions(-DUSE_IPOPT)
- #wrong config under Debian workaround    
- add_definitions( -DHAVE_CSTDDEF )    
- 
- include(FindPackageHandleStandardArgs)   
- # handle the QUIETLY and REQUIRED arguments and set LIBIPOPT_FOUND to TRUE if all listed variables are TRUE   
- find_package_handle_standard_args(IPOPT  DEFAULT_MSG  IPOPT_LIBRARY IPOPT_INCLUDE_DIR) 
- mark_as_advanced(IPOPT_INCLUDE_DIR IPOPT_LIBRARY )  
- 
- include_directories(SYSTEM ${IPOPT_INCLUDE_DIR})
+  find_path(IPOPT_INCLUDE_DIR IpTNLP.hpp PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt/build/include/coin" NO_DEFAULT_PATH )
+  find_library(IPOPT_LIBRARY ipopt PATHS "${PROJECT_SOURCE_DIR}/externalLibs/Ipopt/build/lib" NO_DEFAULT_PATH )
+
+  set(IPOPT_INCLUDE_DIRS "${IPOPT_INCLUDE_DIR}" )
+  set(IPOPT_LIBRARIES "${IPOPT_LIBRARY}")
+  add_definitions(-DUSE_IPOPT)
+  #wrong config under Debian workaround
+  add_definitions( -DHAVE_CSTDDEF )
+
+  include(FindPackageHandleStandardArgs)
+  # handle the QUIETLY and REQUIRED arguments and set LIBIPOPT_FOUND to TRUE if all listed variables are TRUE
+  find_package_handle_standard_args(IPOPT  DEFAULT_MSG  IPOPT_LIBRARY IPOPT_INCLUDE_DIR)
+
+  include_directories(${IPOPT_INCLUDE_DIR})
+  link_directories(${IPOPT_LIBRARY})
 endif( USE_IPOPT )
 
 
@@ -137,28 +151,33 @@ endif( USE_OPENMP )
 
 ###########################################
 #VTK
-############################################  
-option( USE_VTK "VTK Library" ON )
-if ( USE_VTK )
-    set(VTK_DIR "${PROJECT_SOURCE_DIR}/externalLibs/VTK/build" CACHE PATH "VTK directory override" FORCE)
+############################################
+option( PESOPT_WITH_VTK "VTK Library" ON )
+if ( PESOPT_WITH_VTK )
+    find_path(VTK_DIR VTKConfig.cmake PATHS "${PROJECT_SOURCE_DIR}/externalLibs/VTK/build" NO_DEFAULT_PATH )
     find_package(VTK)
-    #find_path(VTK_DIR PATHS "${PROJECT_SOURCE_DIR}/externalLibs/VTK/build" NO_DEFAULT_PATH )  
-    include(${VTK_USE_FILE})
+
+    if( ${VTK_MAJOR_VERSION} GREATER 8 )
+      message( "VTK_MAJOR_VERSION bigger 8" )
+    else ( )
+      message( "VTK_MAJOR_VERSION smaller 9" )
+      include(${VTK_USE_FILE})
+    endif ( )
     add_definitions( -DUSE_VTK )
-endif( USE_VTK )
+endif( PESOPT_WITH_VTK )
+
 
 
 ############################################
 #Libraries
 ############################################  
 include_directories(modules/aol)
-include_directories(modules/Energies)
+include_directories(modules/energies)
 include_directories(modules/materialOptimization)
-include_directories(modules/Solver)
-
+include_directories(modules/solver)
 include_directories(modules/finiteElements/quocElements)
 
-include_directories(external/Eigen)
+# include_directories(external/Eigen)
 include_directories(external/IPOPT)
 include_directories(external/VTK)
 
@@ -166,6 +185,8 @@ include_directories(external/VTK)
 ############################################
 #Projects
 ############################################ 
+add_subdirectory(projects/elasticBodies/elastDeformLinElast)
+add_subdirectory(projects/elasticBodies/materialOptLinElast)
 add_subdirectory(projects/elasticBodies/PeriodicHomogenizationBones)
 
 

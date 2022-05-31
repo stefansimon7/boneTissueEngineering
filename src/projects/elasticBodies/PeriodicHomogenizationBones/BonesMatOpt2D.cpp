@@ -7,7 +7,6 @@ using namespace quocFE;
 using namespace shapeOptBonePolymerPeriodicHomogenization;
 
 #define _USEQUOC2D
-// #define _USEQUOC3D
 
 #ifdef _USEQUOC2D
 typedef Quoc2DDataTypeContainer                                                                                         DataTypeContainer;
@@ -38,7 +37,7 @@ int main(int argc, char ** argv) {
     ParameterParserType parser;
     cout << "Usage: programm [ParameterFile] [saveDirectory][onlyComputeInitialEnergy (optional, default false)] [int designType] [fileName design (if designType = 0)]" << endl;
     if (argc == 1) {
-      parser = ParameterParserType ( "../../../../ParameterParser/shapeDesignBones/BonesAffinePeriodic2D.ini", "../../../../ParameterParser/counter.txt", "/MaterialOptBones2D" );
+      parser = ParameterParserType ( "../../../../parser/shapeDesignBones/BonesAffinePeriodic2D.ini", "../../../../parser/counter.txt", "/MaterialOptBones2D" );
     }
     if( argc > 1 ) parser = ParameterParserType ( argv[1] );
     if( argc > 2 ) parser.set ( "saving.saveDirectory", argv[2] );

@@ -22,7 +22,7 @@ typedef Quoc3DDataTypeContainer  DataTypeContainer;
 int main(int argc, char ** argv) {
     
     aol::BoostParser parser;
-    parser = aol::BoostParser ( "../../../../ParameterParser/shapeDesignBones/BonesAffinePeriodic.ini", "../../../../ParameterParser/counter.txt", "/CompareInitiatlizationMaterialOptBones" );
+    parser = aol::BoostParser ( "../../../../parser/shapeDesignBones/BonesAffinePeriodic.ini", "../../../../parser/counter.txt", "/CompareInitiatlizationMaterialOptBones" );
     const string saveDirectory = parser.template get<string> ("saving.saveDirectory" );
     cout << "saveDirectory is " << saveDirectory.c_str() << endl;    
 

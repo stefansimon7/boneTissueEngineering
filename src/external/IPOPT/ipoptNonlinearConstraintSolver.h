@@ -240,7 +240,7 @@ public:
     ipoptApp->Options()->SetIntegerValue ( "max_iter", _MaxIterations );
     
     switch( _linearSolverTypeIpopt ){
-        case 0: ipoptApp->Options()->SetStringValue ( "linear_solver", "MUMPS" ); break;
+        case 0: ipoptApp->Options()->SetStringValue ( "linear_solver", "ma27" ); break;
         default: break;
     }
 
@@ -525,7 +525,7 @@ public:
     
     // choose linear solver
     switch( _linearSolverTypeIpopt ){
-        case  0: ipoptApp->Options()->SetStringValue ( "linear_solver", "MUMPS" ); break;
+        case  0: ipoptApp->Options()->SetStringValue ( "linear_solver", "ma27" ); break;
         default: break;
     }
 
@@ -893,7 +893,7 @@ public:
     
     // choose linear solver
     switch( _linearSolverTypeIpopt ){
-        case  0: ipoptApp->Options()->SetStringValue ( "linear_solver", "MUMPS" ); break;
+        case  0: ipoptApp->Options()->SetStringValue ( "linear_solver", "ma27" ); break;
         default: break;
     }
     

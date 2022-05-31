@@ -19,8 +19,8 @@ target_link_libraries(BashBonesMatOpt LINK_PUBLIC ${ELASTBODIESPERIODICHOMOGENIZ
 target_link_libraries(BashBonesCompareDesigns LINK_PUBLIC ${ELASTBODIESPERIODICHOMOGENIZATIONBONESLIBS})
 
 if( USE_IPOPT )
-target_link_libraries(BonesMatOpt2D LINK_PUBLIC ${IPOPT_LIBRARIES})
-target_link_libraries(BonesMatOpt3D LINK_PUBLIC ${IPOPT_LIBRARIES})
+    target_link_libraries(BonesMatOpt2D LINK_PUBLIC ${IPOPT_LIBRARIES})
+    target_link_libraries(BonesMatOpt3D LINK_PUBLIC ${IPOPT_LIBRARIES})
 endif( USE_IPOPT )
 
 if( USE_OPENMP )

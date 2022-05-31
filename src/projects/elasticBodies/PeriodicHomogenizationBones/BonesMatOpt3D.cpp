@@ -1,6 +1,5 @@
 #include <quocConfigurators.h>
 #include <quocDefines.h>
-
 #include "BonesMatOptSolver.h"
 
 using namespace quocFE;
@@ -38,7 +37,7 @@ int main(int argc, char ** argv) {
     ParameterParserType parser;
     cout << "Usage: programm [ParameterFile] [saveDirectory][onlyComputeInitialEnergy (optional, default false)] [int designType] [fileName design (if designType = 0)]" << endl;
     if (argc == 1) {
-      parser = ParameterParserType ( "../../../../ParameterParser/shapeDesignBones/BonesAffinePeriodic3D.ini", "../../../../ParameterParser/counter.txt", "/MaterialOptBones3D" );
+      parser = ParameterParserType ( "../../../../parser/shapeDesignBones/BonesAffinePeriodic3D.ini", "../../../../parser/counter.txt", "/MaterialOptBones3D" );
     }
     if( argc > 1 ) parser = ParameterParserType ( argv[1] );
     if( argc > 2 ) parser.set ( "saving.saveDirectory", argv[2] );
